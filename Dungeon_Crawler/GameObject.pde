@@ -1,0 +1,32 @@
+class GameObject {
+
+  int hp, size, roomX, roomY;
+  PVector location, velocity;
+
+  GameObject() {
+    location = new PVector(width/2, height/2);
+    velocity = new PVector (0, 0);
+  }
+
+
+  void show() {
+    stroke(255);
+  }
+  void act() {
+
+    location.add(velocity);
+
+    //check for hitting walls
+    if (!(this instanceof Bullet)) {
+      if (location.x < width * 0.15) location.x = width * 0.15;
+      if (location.x > width * 0.85) location.x = width * 0.85;    
+      if (location.y < height* 0.15) location.y = height * 0.15;
+      if (location.y > height* 0.85) location.y = height * 0.85;
+    } else {
+      if (location.x < width * 0.12 || location.x > width * 0.88 || location.y < height* 0.12 || location.y > height* 0.88) {
+        this.hp--;
+        createParticles(this, 3, 0);
+      }
+    }
+  }
+}
