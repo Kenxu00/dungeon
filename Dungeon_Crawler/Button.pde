@@ -3,12 +3,12 @@ boolean hadPressed;
 
 class Button {
 
-  int x, y, w, h;
+  int x, y, w, h, textsize;
   boolean clicked;
   color highlight, normal;
   String text;
 
-  Button(String t, int _x, int _y, int _w, int _h, color norm, color high) {
+  Button(String t, int _x, int _y, int _w, int _h, color norm, color high, int ts) {
     x = _x;
     y = _y;
     w = _w;
@@ -17,6 +17,7 @@ class Button {
     highlight = high;
     normal = norm;
     clicked = false;
+    textsize = ts;
   }
 
   void show() {
@@ -38,7 +39,8 @@ class Button {
     } else {
       fill(highlight);
     }
-    textSize(w/8);
+    textSize(textsize);
+    
     text(text, x, y);
 
     if (mouseReleased && mouseX > x-w/2 && mouseX < x+w/2 && mouseY > y-h/2 && mouseY < y+h/2) {

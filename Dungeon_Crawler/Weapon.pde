@@ -27,6 +27,8 @@ class Weapon {
       aimVector.setMag(bulletSpeed);
       o.add(new Bullet(aimVector, bulletSpeed, size, damage));
       shotTimer = 0;
+     
+      
     }
   }
 }

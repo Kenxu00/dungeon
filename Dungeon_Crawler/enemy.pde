@@ -9,7 +9,7 @@ class Enemy extends GameObject {
     size = 50;
   }
 
-  Enemy(int health, int s, int x, int y, int rx, int ry) {
+  Enemy(int health, int s, float x, float y, int rx, int ry) {
     location = new PVector (x, y);
     velocity = new PVector (0, 0);
     hp = health;
@@ -36,18 +36,12 @@ class Enemy extends GameObject {
       GameObject obj = o.get(i);
       if (obj instanceof Bullet) {
         Bullet b = (Bullet) obj;
-        if (b.friendly) {
-          float d = dist(location.x, location.y, obj.location.x, obj.location.y);
-          if (d <= (size/2 + obj.size/2)) {
-            hp -= b.damage;
-            obj.hp = 0;
-            createParticles(obj, 1, red);
-          }
+        if (b.friendly && isCollidingWith(obj)) {
+          hp -= b.damage;
+          obj.hp = 0;
+          createParticles(obj, 1, red);
         }
       }
-    }
-    if (i % 2 == 0) {
-      o.add(new eBullet (location.x, location.y, 3, h.location.x, h.location.y));
     }
   }
 }

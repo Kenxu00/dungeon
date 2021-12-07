@@ -4,6 +4,9 @@ void game() {
   drawGameObj();
   drawDarkness();
   drawMinimap();
+  textFont(neatFont);
+  pauseButt.show();
+  bFunction();
 }
 
 //doors
@@ -57,7 +60,11 @@ void drawGameObj() {
     }
     if (obj.hp <= 0) {
       o.remove(i);
-      i--;
+      if (obj instanceof Enemy) { 
+        dropPickups (obj.location.x, obj.location.y, obj.roomX, obj.roomY);
+        h.xp++;
+        o.add(new XPMessage(obj.location.x, obj.location.y, obj.roomX, obj.roomY));
+      }
     }
   }
 }

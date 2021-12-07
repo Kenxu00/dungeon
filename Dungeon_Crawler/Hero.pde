@@ -1,23 +1,34 @@
+ArrayList<barrier> barrierinv = new ArrayList<barrier>();
+ArrayList<friendTurrets> turretinv = new ArrayList<friendTurrets>();
+
 class Hero extends GameObject {  
 
-  float speed;
   Weapon shooty;
+  int immunity = 60;
+  int xp = 0;
+  int maxHp = 5;
+  int speed = 5;
+  int luck = 0;
 
   Hero() {
     super();
-    hp = 3;
+    hp = 5;
     size = 40;
-    speed = 5;
     roomX = 1;
     roomY = 1;
     shooty = new Shotgun();
   }  
 
   void show() {
-    fill (green);
+
+    //immunity timer
+    immunity ++;
+
+    if (immunity > 60) fill (green);
+    else fill (darkGreen);
     stroke(255);
     strokeWeight(2);
-    
+
     circle(location.x, location.y, 40);
 
     shooty.update();
@@ -25,6 +36,7 @@ class Hero extends GameObject {
   }
 
   void act() {
+
 
     super.act();
 
@@ -66,13 +78,35 @@ class Hero extends GameObject {
 
     for (int i = 0; i < o.size(); i++) {
       GameObject obj = o.get(i);
-      if (obj instanceof eBullet) {
-        eBullet b = (eBullet) obj;
-        float d = dist(location.x, location.y, obj.location.x, obj.location.y);
-        if (d <= (size/2 + obj.size/2)) {
-          hp -= b.damage;
+
+      if (isCollidingWith(obj)) {
+
+        if (obj instanceof eBullet && immunity > 60) { 
+          hp --;
           obj.hp = 0;
+          immunity = 0;
           createParticles(obj, 1, red);
+        } else if (obj instanceof chaser && immunity > 60) {
+          hp --;
+          immunity = 0;
+          createParticles(obj, 1, red);
+        } else if (obj instanceof barrier) { //picking barrier pickups up
+          barrier b = (barrier) obj;
+          if (!b.isDeployed) {
+            o.remove(obj);
+            barrierinv.add(b);
+          }
+        } else if (obj instanceof friendTurrets) { //picking barrier pickups up
+          friendTurrets t = (friendTurrets) obj;
+          if (!t.isDeployed) {
+            o.remove(obj);
+            turretinv.add(t);
+          }
+        } else if (obj instanceof heal) { //picking health pickups up
+          if (h.hp < h.maxHp) {
+            o.remove(obj);
+            hp++;
+          }
         }
       }
     }

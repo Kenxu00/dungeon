@@ -11,6 +11,7 @@ class GameObject {
 
   void show() {
     stroke(255);
+    strokeWeight (2);
   }
   void act() {
 
@@ -28,5 +29,16 @@ class GameObject {
         createParticles(this, 3, 0);
       }
     }
+  }
+
+  boolean isCollidingWith (GameObject obj) {
+
+    if (this.roomX == obj.roomX && this.roomY == obj.roomY) {
+      float d = dist(this.location.x, this.location.y, obj.location.x, obj.location.y);
+      if (d <= (this.size/2 + obj.size/2)) {
+        return true;
+      }
+    } 
+    return false;
   }
 }
